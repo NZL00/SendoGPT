@@ -1,2 +1,0 @@
-gpt4all
-flask==3.0.2
