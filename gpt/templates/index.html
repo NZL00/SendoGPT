@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" id="html-tag">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sendo-GPT</title>
+  <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+
+      <h1>Sendo-GPT</h1>
+    </div>
+    <div class="user-options">
+      <select id="themeSelector">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+        <!-- Use any element to open the sidenav -->
+  <span onclick="openNav()" class="opennavi">☰</span>
+    </div>
+  </header>
+
+  <div id="mySidenav" class="sidenavi">
+    <a href="javascript:void(0)" class="closenavi" onclick="closeNav()">&times;</a>
+    <div class="sidenavi-item">
+      <p class="sidenavi-title">Thank you for checking my project.</p>
+    </div>
+  </div>
+
+  <!-- Add all page content inside this div if you want the side nav to push page content to the left -->
+  <div id="main">
+  <main>
+    <h2 style="padding: 4%;">Code Generator</h2>
+    <p>Generate Code with GPT4All</p>
+
+    <form id="myForm" onsubmit="generateCode(); return false;">
+        <label for="description">Print the code</label>
+        <textarea name="description" id="description" rows="5" placeholder="to generate Fibonacci series"></textarea>
+        <br>
+        <select name="language" id="language">
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+        </select>
+        <button type="submit" id="generateButton">Generate</button>
+    </form>
+    <div id="generated_code" class="output-box">Your generated code will appear here.</div>
+    <br><br><br>
+    <div id="documentation_text">↓ Scroll down for the auto documentation ↓</div>
+    <br><br>
+    <div id="documented_code" class="output-box">Your documented code will appear here.</div>
+    <br><br><br><br>
+
+    <script>
+      function generateCode() {
+        // Get user input 
+        var userInput = document.getElementById("description").value;
+
+        // Get selected language
+        var selectedLanguage = document.getElementById("language").value;
+
+        // Combine user input with selected language
+        var prompt = "Print the code " + userInput + " in " + selectedLanguage;
+
+        // Code to fetch generated code using AJAX (fetch API)
+        fetch('/generate_code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt: prompt })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("generated_code").textContent = data.generated_code || "Error generating code.";
+          document.getElementById("documented_code").textContent = data.documentation || "Error generating documentation.";
+        })
+        .catch(error => { // Handle errors appropriately (e.g., display an error message)
+          console.error('Error fetching code:', error);
+        });
+      }
+    </script>
+  </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Sendo-GPT</p>
+  </footer>
+
+  <script src="static/script.js"></script>
+  
+</body>
+</html>
